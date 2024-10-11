@@ -14,6 +14,7 @@ class User(Base):
 	full_name = Column(String, nullable=False)
 	age = Column(Integer, nullable=False)
 	mail = Column(String, nullable=False)
+	rating = Column(Integer, default=0)
 
 
 class MainQuestion(Base):

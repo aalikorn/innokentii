@@ -17,7 +17,8 @@ async def start(message: types.Message, state=FSMContext):
         text = 'Выберите действие'
         await message.reply(text, reply_markup=keyboards.inline.manage_questions.manage_questions_markup())
     elif crud.table_user.get_user(message.from_user.id):
-        text = 'Чтобы запустить квест нажми кнопку "Начать".'
+        text = crud.table_main_question.get_main_question(1).content  # первый мейн
+
         await bot.send_message(
             message.from_user.id,
             text=text,
