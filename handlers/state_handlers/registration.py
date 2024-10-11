@@ -23,3 +23,16 @@ async def save_name(message: types.Message, state=FSMContext):
 			chat_id=message.from_user.id,
 			text='Некорректный формат ввода. Напиши свой полное ФИО. Не используй никаких дополнительных символов.'
 		)
+
+
+@dp.message_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), content_types=['text'],
+					state=UserStates.wait_age)
+async def save_age(message: types.Message, state=FSMContext):
+	await bot.delete_message(message.from_user.id, message.message_id)
+	await bot.delete_message(message.from_user.id, message.message_id - 1)
+	if message.text.isdigit() and (0 < int(message.text) <= 150):  # Возраст указан правильно
+		await state.update_data(user_age=int(message.text))
+		await state.set_state(UserStates.wait_mail)
+		await bot.send_message(chat_id=message.from_user.id, text='Отправь свою почту')
+	else:
+		await bot.send_message(message.from_user.id, text='Некорректный формат ввода. Напиши свой возраст')
