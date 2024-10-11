@@ -7,6 +7,7 @@ def load_main_questions():
 	questions = [
 		models.MainQuestion(
 			id=1,
+			short_name='Группа 1',
 			content='Впереди тебя ждут интересные вопросы, загадки и задачи'
 					'про университет, решая которые ты будешь узнавать все '
 					'больше и больше об этом месте. Все вопросы поделены по '
@@ -19,6 +20,7 @@ def load_main_questions():
 		),
 		models.MainQuestion(
 			id=2,
+			short_name='Группа 2',
 			content='Следующий вопрос откроется тебе, когда ты отправишь сюда '
 					'правильный ответ на задачку, которую ты можешь найти по '
 					'QR-коду около места, номер которого совпадает с самой '
@@ -27,6 +29,7 @@ def load_main_questions():
 		),
 		models.MainQuestion(
 			id=3,
+			short_name='Группа 3',
 			content='Следующий вопрос откроется тебе, когда ты отправишь сюда '
 					'правильный ответ на задачку, которую ты можешь найти по QR-коду '
 					'в месте, где нужно быть очень тихим и внимательным!',
@@ -34,6 +37,7 @@ def load_main_questions():
 		),
 		models.MainQuestion(
 			id=4,
+			short_name='Группа 4',
 			content='Следующий вопрос откроется тебе, когда ты отправишь сюда правильный '
 					'ответ на задачку, которую ты можешь найти по QR-коду в месте, где '
 					'можно провести время с пользой для здоровья!',
@@ -41,6 +45,7 @@ def load_main_questions():
 		),
 		models.MainQuestion(
 			id=5,
+			short_name='Группа 5',
 			content='Следующий вопрос откроется тебе, когда ты отправишь сюда правильный '
 					'ответ на задачку, которую ты можешь найти по QR-коду в месте, '
 					'где наконец можно отдохнуть и посидеть. Кстати, оно находится '
@@ -51,3 +56,11 @@ def load_main_questions():
 	session.query(models.MainQuestion).delete()  # Очищаем таблицу
 	session.add_all(questions)
 	session.commit()
+
+
+def get_all():
+	session = db.SessionLocal()
+	query = session.query(models.MainQuestion)
+
+	data = query.filter().all()
+	return data
