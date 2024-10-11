@@ -36,3 +36,12 @@ def increase_rating(user_id: int):
         {models.User.rating: models.User.rating + 1}
     )
     session.commit()
+
+
+def reset_rating(telegram_id: int):
+    session = db.SessionLocal()
+    query = session.query(models.User)
+    query.filter(models.User.telegram_id == telegram_id).update(
+        {models.User.rating: 0}
+    )
+    session.commit()

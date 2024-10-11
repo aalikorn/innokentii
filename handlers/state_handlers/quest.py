@@ -22,6 +22,7 @@ async def save_answer_main(message: types.Message, state=FSMContext):
                 'Университету Иннополис от команды «Маркеры»! '
                 f'Твой результат составил - {rating} / MAX_RES. Надеюсь, тебе понравился этот опыт и ты сохранишь ' # TODO
                 'стикеры со мной, белым барсом Иннокентием! Удачи)')
+        await state.set_state(UserStates.start)
         await bot.send_message(chat_id=message.from_user.id, text=text)
         return
 
@@ -30,9 +31,9 @@ async def save_answer_main(message: types.Message, state=FSMContext):
 
     right_answer = main_question.answer
     if message.text.lower() == right_answer:
+        user = crud.table_user.get_user(message.from_user.id)
+        crud.table_user.increase_rating(user.user_id)
         text = main_question.right_response
-        # text = '''Правильно! Вот след'''
-        # TODO
     else:
         text = main_question.wrong_response
         # text = f'''Неверно((( Правильный ответ - "{right_answer}"'''
@@ -81,6 +82,7 @@ async def validate_side_answer(message: types.Message, state=FSMContext):
                     'Университету Иннополис от команды «Маркеры»! '
                     f'Твой результат составил - {rating} / MAX_RES. Надеюсь, тебе понравился этот опыт и ты сохранишь '  # TODO
                     'стикеры со мной, белым барсом Иннокентием! Удачи)')
+            await state.set_state(UserStates.start)
             await bot.send_message(chat_id=message.from_user.id, text=text)
             return
         text = main_question.content

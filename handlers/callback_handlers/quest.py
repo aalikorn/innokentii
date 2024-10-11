@@ -10,6 +10,7 @@ from database import crud
 @dp.callback_query_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), text='start_quest', state='*')
 async def start_quest(call: types.CallbackQuery, state: FSMContext):
     # даем сайды
+    crud.table_user.reset_rating(call.from_user.id)
     await state.set_state(UserStates.side_question)
     group_side_questions = crud.table_side_question.get_questions(main_question_id=1)
     await state.update_data(main_q_id=1, group_side_questions=group_side_questions,
