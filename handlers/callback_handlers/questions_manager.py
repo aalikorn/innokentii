@@ -45,7 +45,8 @@ async def choose_question(call: types.CallbackQuery, state: FSMContext):
 	main_question_id = int(call.data.split(':')[1])
 	await state.update_data(main_question_id=main_question_id)
 	await call.message.edit_text('Выберите вопрос',
-								 reply_markup=keyboards.inline.manage_questions.choose_question_markup(main_question_id))
+								 reply_markup=keyboards.inline.manage_questions.choose_question_markup(
+									 main_question_id))
 
 
 @dp.callback_query_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), text_startswith='main_question',
@@ -54,16 +55,19 @@ async def choose_question(call: types.CallbackQuery, state: FSMContext):
 	main_question_id = int(call.data.split(':')[1])
 	await state.update_data(main_question_id=main_question_id)
 	await call.message.edit_text('Выберите вопрос',
-								 reply_markup=keyboards.inline.manage_questions.choose_question_markup(main_question_id))
+								 reply_markup=keyboards.inline.manage_questions.choose_question_markup(
+									 main_question_id))
 
 
 @dp.callback_query_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), text_startswith='question',
 						   state=UserStates.delete_question)
 async def delete_question(call: types.CallbackQuery, state: FSMContext):
 	question_id = int(call.data.split(':')[1])
+
 	await state.set_state(UserStates.start)
 	await call.message.delete()
-	await bot.send_message(call.from_user.id, 'Вопрос удалён')
+	await bot.send_message(call.from_user.id, 'Вопрос удалён',
+						   reply_markup=keyboards.inline.admin.admin_markup())
 	crud.table_side_question.delete_question(question_id)
 
 

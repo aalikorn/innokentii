@@ -2,16 +2,6 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from database import crud
 
 
-def manage_questions_markup():
-	markup = InlineKeyboardMarkup()
-	btn1 = InlineKeyboardButton("Создать новый вопрос", callback_data='create_question')
-	btn2 = InlineKeyboardButton("Удалить вопрос", callback_data='delete_question')
-	btn3 = InlineKeyboardButton("Изменить вопрос", callback_data='edit_question')
-	markup.row(btn1)
-	markup.row(btn2, btn3)
-	return markup
-
-
 def create_question_markup():
 	markup = InlineKeyboardMarkup()
 	for main_question in crud.table_main_question.get_all():

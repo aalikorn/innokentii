@@ -12,25 +12,25 @@ from database import crud
 
 @dp.message_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), commands=['start'], state='*')
 async def start(message: types.Message, state=FSMContext):
-    await state.set_state(UserStates.start)
-    if (message.from_user.id in config.ADMINS):
-        text = 'Выберите действие'
-        await message.reply(text, reply_markup=keyboards.inline.manage_questions.manage_questions_markup())
-    elif crud.table_user.get_user(message.from_user.id):
-        text = crud.table_main_question.get_main_question(1).content  # первый мейн
+	await state.set_state(UserStates.start)
+	if (message.from_user.id in config.ADMINS):
+		text = 'Выберите действие'
+		await message.reply(text, reply_markup=keyboards.inline.admin.admin_markup())
+	elif crud.table_user.get_user(message.from_user.id):
+		text = crud.table_main_question.get_main_question(1).content  # первый мейн
 
-        await bot.send_message(
-            message.from_user.id,
-            text=text,
-            reply_markup=keyboards.inline.quest.start_quest()
-        )
-    else:
-        text = 'Привет! \n' \
-               'Меня зовут Бот Иннокентий и я провожу ' \
-               'интерактивные экскурсии по Университету Иннополис.\n' \
-               'Перед началом работы тебе нужно заполнить анкету.'
-        await bot.send_message(
-            message.from_user.id,
-            text=text,
-            reply_markup=keyboards.inline.registartion.start_registration()
-        )
+		await bot.send_message(
+			message.from_user.id,
+			text=text,
+			reply_markup=keyboards.inline.quest.start_quest()
+		)
+	else:
+		text = 'Привет! \n' \
+			   'Меня зовут Бот Иннокентий и я провожу ' \
+			   'интерактивные экскурсии по Университету Иннополис.\n' \
+			   'Перед началом работы тебе нужно заполнить анкету.'
+		await bot.send_message(
+			message.from_user.id,
+			text=text,
+			reply_markup=keyboards.inline.registartion.start_registration()
+		)
