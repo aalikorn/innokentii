@@ -12,3 +12,7 @@ class UserStates(StatesGroup):
     answer = State()  # Ответ на вопрос
     right_response = State()  # Что бот пишет при правильном ответе
     wrong_response = State()  # Что бот пишет при неправильном ответе
+
+    # Начало квеста
+    side_question = State()  # Побочные вопросы
+    main_question = State()  # Главные вопросы
