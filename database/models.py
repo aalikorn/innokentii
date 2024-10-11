@@ -20,7 +20,7 @@ class MainQuestion(Base):
 	"""Таблица для главного вопроса"""
 	__tablename__ = 'MainQuestion'
 
-	id = Column(Integer, unique=True, nullable=False)
+	id = Column(Integer, unique=True, nullable=False, primary_key=True)
 	content = Column(String, nullable=False)
 	answer = Column(String)
 	right_response = Column(String)

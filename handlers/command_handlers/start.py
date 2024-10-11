@@ -14,7 +14,7 @@ from database import crud
 async def start(message: types.Message, state=FSMContext):
     await state.set_state(UserStates.start)
     if (message.from_user.id in config.ADMINS):
-        text = """Выбери действие:"""
+        text = 'Выберите действие'
         await message.reply(text, reply_markup=keyboards.inline.manage_questions.manage_questions_markup())
     elif crud.table_user.get_user(message.from_user.id):
         text = 'Чтобы запустить квест нажми кнопку "Начать".'
