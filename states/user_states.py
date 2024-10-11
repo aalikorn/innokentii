@@ -16,3 +16,10 @@ class UserStates(StatesGroup):
 
 	# Удаление вопроса
 	delete_question = State()
+
+	# Изменение вопроса
+	edit_question = State()
+	edit_question_content = State()
+	edit_question_answer = State()
+	edit_question_right_response = State()
+	edit_question_wrong_response = State()

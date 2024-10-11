@@ -51,3 +51,39 @@ async def save_question(message: types.Message, state=FSMContext):
 	)
 
 	await bot.send_message(chat_id=message.from_user.id, text='Добавлен новый вопрос')
+
+
+@dp.message_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), content_types=['text'],
+					state=UserStates.edit_question_content)
+async def edit_question_content(message: types.Message, state=FSMContext):
+	data = await state.get_data()
+	question_id = data.get('question_id')
+	crud.table_side_question.edit_question(question_id=question_id, content=message.text)
+	await bot.send_message(message.from_user.id, 'Данные обновлены')
+
+
+@dp.message_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), content_types=['text'],
+					state=UserStates.edit_question_answer)
+async def edit_question_answer(message: types.Message, state=FSMContext):
+	data = await state.get_data()
+	question_id = data.get('question_id')
+	crud.table_side_question.edit_question(question_id=question_id, answer=message.text)
+	await bot.send_message(message.from_user.id, 'Данные обновлены')
+
+
+@dp.message_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), content_types=['text'],
+					state=UserStates.edit_question_right_response)
+async def edit_question_right_response(message: types.Message, state=FSMContext):
+	data = await state.get_data()
+	question_id = data.get('question_id')
+	crud.table_side_question.edit_question(question_id=question_id, right_response=message.text)
+	await bot.send_message(message.from_user.id, 'Данные обновлены')
+
+
+@dp.message_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), content_types=['text'],
+					state=UserStates.edit_question_wrong_response)
+async def edit_question_wrong_response(message: types.Message, state=FSMContext):
+	data = await state.get_data()
+	question_id = data.get('question_id')
+	crud.table_side_question.edit_question(question_id=question_id, wrong_response=message.text)
+	await bot.send_message(message.from_user.id, 'Данные обновлены')

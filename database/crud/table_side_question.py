@@ -26,3 +26,27 @@ def delete_question(question_id: int):
 	query = session.query(models.SideQuestion)
 	query.filter(models.SideQuestion.id == question_id).delete()
 	session.commit()
+
+
+def edit_question(
+		question_id: int,
+		content: str = None,
+		answer: str = None,
+		right_response: str = None,
+		wrong_response: str = None):
+	content = models.SideQuestion.content if not content else content
+	answer = models.SideQuestion.answer if not answer else answer
+	right_response = models.SideQuestion.right_response if not right_response else right_response
+	wrong_response = models.SideQuestion.wrong_response if not wrong_response else wrong_response
+
+	session = db.SessionLocal()
+	query = session.query(models.SideQuestion)
+	query.filter(models.SideQuestion.id == question_id).update(
+		{
+			models.SideQuestion.content: content,
+			models.SideQuestion.answer: answer,
+			models.SideQuestion.right_response: right_response,
+			models.SideQuestion.wrong_response: wrong_response
+		}
+	)
+	session.commit()
