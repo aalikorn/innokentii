@@ -92,3 +92,9 @@ def get_main_question(main_q_id: int):
 	session = db.SessionLocal()
 	query = session.query(models.MainQuestion)
 	return query.filter(models.MainQuestion.id == main_q_id).one_or_none()
+
+
+def count_rows():
+	session = db.SessionLocal()
+	query = session.query(models.MainQuestion)
+	return query.count()
