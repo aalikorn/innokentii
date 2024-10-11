@@ -17,23 +17,23 @@ class User(Base):
 
 
 class MainQuestion(Base):
-    """Таблица для главного вопроса"""
-    __tablename__ = 'MainQuestion'
+	"""Таблица для главного вопроса"""
+	__tablename__ = 'MainQuestion'
 
-    id = Column(Integer, primary_key=True, unique=True, nullable=False)
-    content = Column(String, nullable=False)
-    answer = Column(String, nullable=False)
-    right_response = Column(String, nullable=False)
-    wrong_response = Column(String, nullable=False)
+	id = Column(Integer, unique=True, nullable=False)
+	content = Column(String, nullable=False)
+	answer = Column(String)
+	right_response = Column(String)
+	wrong_response = Column(String)
 
 
 class SideQuestion(Base):
-    """Таблица для побочного вопроса"""
-    __tablename__ = 'SideQuestion'
+	"""Таблица для побочного вопроса"""
+	__tablename__ = 'SideQuestion'
 
-    id = Column(Integer, primary_key=True, unique=True, nullable=False)
-    main_question_id = Column(Integer, nullable=False)
-    content = Column(String, nullable=False)
-    answer = Column(String, nullable=False)
-    right_response = Column(String, nullable=False)
-    wrong_response = Column(String, nullable=False)
+	id = Column(Integer, primary_key=True, unique=True, nullable=False)
+	main_question_id = Column(Integer, nullable=False)
+	content = Column(String, nullable=False)
+	answer = Column(String, nullable=False)
+	right_response = Column(String, nullable=False)
+	wrong_response = Column(String, nullable=False)
