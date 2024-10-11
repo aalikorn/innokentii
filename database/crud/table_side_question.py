@@ -2,23 +2,23 @@ from database import db
 from database import models
 
 
-def create_question(content: str, answer: str, right_response: str, wrong_response: str, group_id: int):
+def create_question(content: str, answer: str, right_response: str, wrong_response: str, main_question_id: int):
 	session = db.SessionLocal()
 	side_question = models.SideQuestion(
 		content=content,
 		answer=answer,
 		right_response=right_response,
 		wrong_response=wrong_response,
-		group_id=group_id
+		main_question_id=main_question_id
 	)
 	session.add(side_question)
 	session.commit()
 
 
-def get_questions(group_id: int):
+def get_questions(main_question_id: int):
 	session = db.SessionLocal()
 	query = session.query(models.SideQuestion)
-	return query.filter(models.SideQuestion.group_id == group_id).all()
+	return query.filter(models.SideQuestion.main_question_id == main_question_id).all()
 
 
 def delete_question(question_id: int):

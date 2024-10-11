@@ -14,23 +14,25 @@ def manage_questions_markup():
 
 def create_question_markup():
 	markup = InlineKeyboardMarkup()
-	for group in crud.table_group.get_all():
-		btn = InlineKeyboardButton(f"{group.id}. {group.short_name}", callback_data=f'add_question:{group.id}')
+	for main_question in crud.table_main_question.get_all():
+		btn = InlineKeyboardButton(f"{main_question.id}. {main_question.short_name}",
+								   callback_data=f'add_question:{main_question.id}')
 		markup.row(btn)
 	return markup
 
 
-def choose_group_markup():
+def choose_main_question_markup():
 	markup = InlineKeyboardMarkup()
-	for group in crud.table_group.get_all():
-		btn = InlineKeyboardButton(f"{group.id}. {group.short_name}", callback_data=f'group:{group.id}')
+	for main_question in crud.table_main_question.get_all():
+		btn = InlineKeyboardButton(f"{main_question.id}. {main_question.short_name}",
+								   callback_data=f'main_question:{main_question.id}')
 		markup.row(btn)
 	return markup
 
 
-def choose_question_markup(group_id: int):
+def choose_question_markup(main_question_id: int):
 	markup = InlineKeyboardMarkup()
-	for i, question in enumerate(crud.table_side_question.get_questions(group_id=group_id), start=1):
+	for i, question in enumerate(crud.table_side_question.get_questions(main_question_id=main_question_id), start=1):
 		btn = InlineKeyboardButton(f'{i}. {question.content}', callback_data=f'question:{question.id}')
 		markup.row(btn)
 	return markup

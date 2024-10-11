@@ -12,49 +12,49 @@ import keyboards
 async def add_question(call: types.CallbackQuery, state: FSMContext):
 	await state.set_state(UserStates.create_question)
 	await call.message.edit_text(text='Выберите группу',
-								 reply_markup=keyboards.inline.manage_questions.choose_group_markup())
+								 reply_markup=keyboards.inline.manage_questions.choose_main_question_markup())
 
 
 @dp.callback_query_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), text='delete_question', state='*')
-async def choose_group(call: types.CallbackQuery, state: FSMContext):
+async def choose_main_question(call: types.CallbackQuery, state: FSMContext):
 	await state.set_state(UserStates.delete_question)
 	await call.message.edit_text(text='Выберите группу',
-								 reply_markup=keyboards.inline.manage_questions.choose_group_markup())
+								 reply_markup=keyboards.inline.manage_questions.choose_main_question_markup())
 
 
 @dp.callback_query_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), text='edit_question', state='*')
-async def choose_group(call: types.CallbackQuery, state: FSMContext):
+async def choose_main_question(call: types.CallbackQuery, state: FSMContext):
 	await state.set_state(UserStates.edit_question)
 	await call.message.edit_text(text='Выберите группу',
-								 reply_markup=keyboards.inline.manage_questions.choose_group_markup())
+								 reply_markup=keyboards.inline.manage_questions.choose_main_question_markup())
 
 
-@dp.callback_query_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), text_startswith='group',
+@dp.callback_query_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), text_startswith='main_question',
 						   state=UserStates.create_question)
 async def create_question(call: types.CallbackQuery, state: FSMContext):
-	group_id = int(call.data.split(':')[1])
+	main_question_id = int(call.data.split(':')[1])
 	await call.message.delete()
-	await state.update_data(group_id=group_id)
+	await state.update_data(main_question_id=main_question_id)
 	await state.set_state(UserStates.content)
 	await bot.send_message(call.from_user.id, text='Введите содержание вопроса')
 
 
-@dp.callback_query_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), text_startswith='group',
+@dp.callback_query_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), text_startswith='main_question',
 						   state=UserStates.delete_question)
 async def choose_question(call: types.CallbackQuery, state: FSMContext):
-	group_id = int(call.data.split(':')[1])
-	await state.update_data(group=group_id)
+	main_question_id = int(call.data.split(':')[1])
+	await state.update_data(main_question_id=main_question_id)
 	await call.message.edit_text('Выберите вопрос',
-								 reply_markup=keyboards.inline.manage_questions.choose_question_markup(group_id))
+								 reply_markup=keyboards.inline.manage_questions.choose_question_markup(main_question_id))
 
 
-@dp.callback_query_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), text_startswith='group',
+@dp.callback_query_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), text_startswith='main_question',
 						   state=UserStates.edit_question)
 async def choose_question(call: types.CallbackQuery, state: FSMContext):
-	group_id = int(call.data.split(':')[1])
-	await state.update_data(group=group_id)
+	main_question_id = int(call.data.split(':')[1])
+	await state.update_data(main_question_id=main_question_id)
 	await call.message.edit_text('Выберите вопрос',
-								 reply_markup=keyboards.inline.manage_questions.choose_question_markup(group_id))
+								 reply_markup=keyboards.inline.manage_questions.choose_question_markup(main_question_id))
 
 
 @dp.callback_query_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), text_startswith='question',

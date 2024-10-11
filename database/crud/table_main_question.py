@@ -5,7 +5,7 @@ from database import models
 def load_main_questions():
 	session = db.SessionLocal()
 	questions = [
-		models.Group(
+		models.MainQuestion(
 			id=1,
 			short_name='Вход-макет',
 			content='Впереди тебя ждут интересные вопросы, загадки и задачи'
@@ -18,7 +18,7 @@ def load_main_questions():
 					'где найти QR и как решить задачку. Удачи в прохождении! '
 					'Чтобы запустить квест нажми кнопку "Начать"'
 		),
-		models.Group(
+		models.MainQuestion(
 			id=2,
 			short_name='Аудитории',
 			content='Следующий вопрос откроется тебе, когда ты отправишь сюда '
@@ -27,7 +27,7 @@ def load_main_questions():
 					'крутой бургерной в городе.',
 			answer='юг'
 		),
-		models.Group(
+		models.MainQuestion(
 			id=3,
 			short_name='Читалка',
 			content='Следующий вопрос откроется тебе, когда ты отправишь сюда '
@@ -35,7 +35,7 @@ def load_main_questions():
 					'в месте, где нужно быть очень тихим и внимательным!',
 			answer='библиотека'
 		),
-		models.Group(
+		models.MainQuestion(
 			id=4,
 			short_name='Matrix',
 			content='Следующий вопрос откроется тебе, когда ты отправишь сюда правильный '
@@ -43,7 +43,7 @@ def load_main_questions():
 					'можно провести время с пользой для здоровья!',
 			answer='матрица'
 		),
-		models.Group(
+		models.MainQuestion(
 			id=5,
 			short_name='Чилл зона-лестница',
 			content='Следующий вопрос откроется тебе, когда ты отправишь сюда правильный '
@@ -53,14 +53,14 @@ def load_main_questions():
 			answer='конец'
 		)
 	]
-	session.query(models.Group).delete()  # Очищаем таблицу
+	session.query(models.MainQuestion).delete()  # Очищаем таблицу
 	session.add_all(questions)
 	session.commit()
 
 
 def get_all():
 	session = db.SessionLocal()
-	query = session.query(models.Group)
+	query = session.query(models.MainQuestion)
 
 	data = query.filter().all()
 	return data

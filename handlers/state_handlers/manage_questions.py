@@ -1,7 +1,6 @@
 from aiogram.dispatcher.filters import ChatTypeFilter
 from aiogram.dispatcher import FSMContext
 from aiogram import types
-import re
 
 from loader import bot, dp
 from states.user_states import UserStates
@@ -40,14 +39,14 @@ async def save_question(message: types.Message, state=FSMContext):
 	content = data.get('content')
 	answer = data.get('answer')
 	right_response = data.get('right_response')
-	group_id = data.get('group_id')
+	main_question_id = data.get('main_question_id')
 
 	crud.table_side_question.create_question(
 		content=content,
 		answer=answer,
 		right_response=right_response,
 		wrong_response=message.text,
-		group_id=group_id
+		main_question_id=main_question_id
 	)
 
 	await bot.send_message(chat_id=message.from_user.id, text='Добавлен новый вопрос')
