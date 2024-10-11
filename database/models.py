@@ -16,8 +16,8 @@ class User(Base):
 	mail = Column(String, nullable=False)
 
 
-class MainQuestion(Base):
-	"""Таблица для главного вопроса"""
+class Group(Base):
+	"""Таблица для главных тематических вопросов"""
 	__tablename__ = 'MainQuestion'
 
 	id = Column(Integer, unique=True, nullable=False, primary_key=True)
@@ -33,7 +33,7 @@ class SideQuestion(Base):
 	__tablename__ = 'SideQuestion'
 
 	id = Column(Integer, primary_key=True, unique=True, nullable=False)
-	main_question_id = Column(Integer, nullable=False)
+	group_id = Column(Integer, nullable=False)
 	content = Column(String, nullable=False)
 	answer = Column(String, nullable=False)
 	right_response = Column(String, nullable=False)

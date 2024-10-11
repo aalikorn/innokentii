@@ -14,4 +14,4 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 models.Base.metadata.create_all(bind=engine)
 
 # Загружаем мейн-вопросы
-crud.table_main_question.load_main_questions()
+crud.table_group.load_main_questions()

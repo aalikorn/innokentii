@@ -34,18 +34,20 @@ async def save_right_response(message: types.Message, state=FSMContext):
 @dp.message_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), content_types=['text'],
 					state=UserStates.wrong_response)
 async def save_question(message: types.Message, state=FSMContext):
-	await state.update_data(wrong_response=message.text)
 	await state.set_state(state=None)
 
 	data = await state.get_data()
 	content = data.get('content')
 	answer = data.get('answer')
 	right_response = data.get('right_response')
+	group_id = data.get('group_id')
+
 	crud.table_side_question.create_question(
 		content=content,
 		answer=answer,
 		right_response=right_response,
-		wrong_response=message.text
+		wrong_response=message.text,
+		group_id=group_id
 	)
 
 	await bot.send_message(chat_id=message.from_user.id, text='Добавлен новый вопрос')

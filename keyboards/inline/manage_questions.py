@@ -12,9 +12,25 @@ def manage_questions_markup():
 	return markup
 
 
+def create_question_markup():
+	markup = InlineKeyboardMarkup()
+	for group in crud.table_group.get_all():
+		btn = InlineKeyboardButton(f"{group.id}. {group.short_name}", callback_data=f'add_question:{group.id}')
+		markup.row(btn)
+	return markup
+
+
 def choose_group_markup():
 	markup = InlineKeyboardMarkup()
-	for group in crud.table_main_question.get_all():
+	for group in crud.table_group.get_all():
 		btn = InlineKeyboardButton(f"{group.id}. {group.short_name}", callback_data=f'group:{group.id}')
+		markup.row(btn)
+	return markup
+
+
+def choose_question_markup(group_id: int):
+	markup = InlineKeyboardMarkup()
+	for i, question in enumerate(crud.table_side_question.get_questions(group_id=group_id), start=1):
+		btn = InlineKeyboardButton(f'{i}. {question.content}', callback_data=f'question:{question.id}')
 		markup.row(btn)
 	return markup
