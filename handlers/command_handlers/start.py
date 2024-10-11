@@ -3,12 +3,14 @@ from aiogram.dispatcher import FSMContext
 from aiogram import types
 
 from loader import bot, dp
+from states.user_states import UserStates
 from database import crud
 import keyboards
 
 
 @dp.message_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), commands=['start'], state='*')
 async def start(message: types.Message, state=FSMContext):
+	await state.set_state(UserStates.start)
 	user = crud.table_user.get_user(message.from_user.id)
 	if user is not None:
 		text = 'Чтобы запустить квест нажми кнопку "Начать".'
