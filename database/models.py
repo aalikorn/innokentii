@@ -6,13 +6,14 @@ from database.db import Base
 
 
 class User(Base):
-    """Таблица для пользователей"""
-    __tablename__ = 'User'
+	"""Таблица для пользователей"""
+	__tablename__ = 'User'
 
-    user_id = Column(Integer, primary_key=True, unique=True, nullable=False)
-    full_name = Column(String, nullable=False)
-    age = Column(Integer, nullable=False)
-    mail = Column(String, nullable=False)
+	user_id = Column(Integer, primary_key=True, unique=True, nullable=False)
+	telegram_id = Column(Integer, unique=True, nullable=False)
+	full_name = Column(String, nullable=False)
+	age = Column(Integer, nullable=False)
+	mail = Column(String, nullable=False)
 
 
 class MainQuestion(Base):
@@ -27,7 +28,7 @@ class MainQuestion(Base):
 
 
 class SideQuestion(Base):
-    """Таблица для побочный вопроса"""
+    """Таблица для побочного вопроса"""
     __tablename__ = 'SideQuestion'
 
     id = Column(Integer, primary_key=True, unique=True, nullable=False)
