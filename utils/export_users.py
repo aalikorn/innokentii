@@ -18,6 +18,6 @@ def export_users():
 		sheet.append(row)
 
 	base_dir = os.path.dirname(os.path.dirname(__file__))
-	file_name = os.path.join(base_dir, 'users.xlsx')
+	file_name = os.path.join(base_dir, 'utils', 'users.xlsx')
 	workbook.save(file_name)
 	return os.path.join(base_dir, file_name)
