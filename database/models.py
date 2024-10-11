@@ -17,10 +17,11 @@ class User(Base):
 
 
 class MainQuestion(Base):
-	"""Таблица для главного вопроса"""
+	"""Таблица для главных тематических вопросов"""
 	__tablename__ = 'MainQuestion'
 
-	id = Column(Integer, unique=True, nullable=False)
+	id = Column(Integer, unique=True, nullable=False, primary_key=True)
+	short_name = Column(String, nullable=False)
 	content = Column(String, nullable=False)
 	answer = Column(String)
 	right_response = Column(String)
