@@ -19,7 +19,7 @@ async def save_answer_main(message: types.Message, state=FSMContext):
 		max_res = crud.table_main_question.count_rows() + crud.table_side_question.count_rows()
 		text = ('Поздравляю, ты прошел всю интерактивную экскурсию по '
 				'Университету Иннополис от команды «Маркеры»! '
-				f'Твой результат составил - {rating} / {max_res}. Надеюсь, тебе понравился этот опыт и ты сохранишь '
+				f'Твой результат составил {rating} / {max_res}. Надеюсь, тебе понравился этот опыт и ты сохранишь '
 				'стикеры со мной, белым барсом Иннокентием! Удачи)')
 		await state.set_state(UserStates.start)
 		await bot.send_message(chat_id=message.from_user.id, text=text)
@@ -78,7 +78,7 @@ async def validate_side_answer(message: types.Message, state=FSMContext):
 			max_res = crud.table_main_question.count_rows() + crud.table_side_question.count_rows()
 			text = ('Поздравляю, ты прошел всю интерактивную экскурсию по '
 					'Университету Иннополис от команды «Маркеры»! '
-					f'Твой результат составил - {rating} / {max_res}. Надеюсь, тебе понравился этот опыт и ты сохранишь '
+					f'Твой результат составил {rating} / {max_res}. Надеюсь, тебе понравился этот опыт и ты сохранишь '
 					'стикеры со мной, белым барсом Иннокентием! Удачи)')
 			await state.set_state(UserStates.start)
 			await bot.send_message(chat_id=message.from_user.id, text=text)
