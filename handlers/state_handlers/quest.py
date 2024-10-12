@@ -32,19 +32,16 @@ async def save_answer_main(message: types.Message, state=FSMContext):
 	right_answer = main_question.answer
 	if message.text.lower() == right_answer:
 		stickers = [
-			'CAACAgIAAxkBAAEM8_lnCgmhP2GPrVSAvd7qc3lb7QbcAgACSlkAAgxkUUhvU_3R1HXvMjYE',
-			'CAACAgIAAxkBAAEM9AVnCgmyzSo - viiKphfvTw6hchYIOAACDFEAAllQUUh5bZw1MDbQ_jYE'
+			r'CAACAgIAAxkBAAEM8_lnCgmhP2GPrVSAvd7qc3lb7QbcAgACSlkAAgxkUUhvU_3R1HXvMjYE',
+			r'CAACAgIAAxkBAAEM9AVnCgmyzSo-viiKphfvTw6hchYIOAACDFEAAllQUUh5bZw1MDbQ_jYE',
+			r'CAACAgIAAxkBAAEM9ANnCgmvX_2VSI02mWUjvUno62WejAACFVMAAkEvUEh7r6biYBnJ8TYE'
 		]
 		sticker = random.choice(stickers)
 		user = crud.table_user.get_user(message.from_user.id)
 		crud.table_user.increase_rating(user.user_id)
 		text = main_question.right_response
 	else:
-		stickers = [
-			'CAACAgIAAxkBAAEM9AFnCgmt_i_PHriaSMWZOzlED-lunwACN1kAAnNTUUg-AtQiceHVhTYE',
-			'CAACAgIAAxkBAAEM9ANnCgmvX_2VSI02mWUjvUno62WejAACFVMAAkEvUEh7r6biYBnJ8TYE'
-		]
-		sticker = random.choice(stickers)
+		sticker = r'CAACAgIAAxkBAAEM9AFnCgmt_i_PHriaSMWZOzlED-lunwACN1kAAnNTUUg-AtQiceHVhTYE'
 		text = main_question.wrong_response
 
 	await state.set_state(UserStates.side_question)
@@ -72,18 +69,15 @@ async def validate_side_answer(message: types.Message, state=FSMContext):
 	answer = message.text
 	if answer.lower() == side_question.answer:
 		stickers = [
-			'CAACAgIAAxkBAAEM8_lnCgmhP2GPrVSAvd7qc3lb7QbcAgACSlkAAgxkUUhvU_3R1HXvMjYE',
-			'CAACAgIAAxkBAAEM9AVnCgmyzSo - viiKphfvTw6hchYIOAACDFEAAllQUUh5bZw1MDbQ_jYE'
+			r'CAACAgIAAxkBAAEM8_lnCgmhP2GPrVSAvd7qc3lb7QbcAgACSlkAAgxkUUhvU_3R1HXvMjYE',
+			r'CAACAgIAAxkBAAEM9AVnCgmyzSo-viiKphfvTw6hchYIOAACDFEAAllQUUh5bZw1MDbQ_jYE',
+			r'CAACAgIAAxkBAAEM9ANnCgmvX_2VSI02mWUjvUno62WejAACFVMAAkEvUEh7r6biYBnJ8TYE'
 		]
 		sticker = random.choice(stickers)
 		crud.table_user.increase_rating(user.user_id)
 		text = side_question.right_response
 	else:
-		stickers = [
-			'CAACAgIAAxkBAAEM9AFnCgmt_i_PHriaSMWZOzlED-lunwACN1kAAnNTUUg-AtQiceHVhTYE',
-			'CAACAgIAAxkBAAEM9ANnCgmvX_2VSI02mWUjvUno62WejAACFVMAAkEvUEh7r6biYBnJ8TYE'
-		]
-		sticker = random.choice(stickers)
+		sticker = r'CAACAgIAAxkBAAEM9AFnCgmt_i_PHriaSMWZOzlED-lunwACN1kAAnNTUUg-AtQiceHVhTYE'
 		text = side_question.wrong_response
 
 	await bot.send_sticker(message.from_user.id, sticker)
@@ -101,6 +95,10 @@ async def validate_side_answer(message: types.Message, state=FSMContext):
 		if main_question is None:
 			rating = crud.table_user.get_user(telegram_id=message.from_user.id).rating
 			max_res = crud.table_main_question.count_rows() + crud.table_side_question.count_rows()
+
+			sticker = r'CAACAgIAAxkBAAEM8_9nCgmqwJVG1uICSjAHKwJmnWf94AACnU8AAtINUEg7JWGTMHNWkDYE'
+			await bot.send_sticker(message.from_user.id, sticker)
+
 			text = ('Поздравляю, ты прошел всю интерактивную экскурсию по '
 					'Университету Иннополис от команды «Маркеры»! '
 					f'Твой результат составил {rating} / {max_res}. Надеюсь, тебе понравился этот опыт и ты сохранишь '
@@ -110,6 +108,9 @@ async def validate_side_answer(message: types.Message, state=FSMContext):
 			return
 
 		text = main_question.content
+
+		sticker = r'CAACAgIAAxkBAAEM8_1nCgmn1svonSMqIceT6AasU39IWAACbl4AAkxjUEiPpzM_cnUx8DYE'
+		await bot.send_sticker(message.from_user.id, sticker)
 
 		await state.set_state(UserStates.main_question)
 
