@@ -29,8 +29,8 @@ async def save_answer_main(message: types.Message, state=FSMContext):
 
 	group_side_questions = main_q_data.get('group_side_questions')
 
-	right_answer = main_question.answer
-	if message.text.lower() == right_answer:
+	main_answers = main_question.answer.split(',')
+	if message.text.lower() in main_answers:
 		stickers = [
 			r'CAACAgIAAxkBAAEM8_lnCgmhP2GPrVSAvd7qc3lb7QbcAgACSlkAAgxkUUhvU_3R1HXvMjYE',
 			r'CAACAgIAAxkBAAEM9AVnCgmyzSo-viiKphfvTw6hchYIOAACDFEAAllQUUh5bZw1MDbQ_jYE',
@@ -67,7 +67,8 @@ async def validate_side_answer(message: types.Message, state=FSMContext):
 	user = crud.table_user.get_user(message.from_user.id)
 
 	answer = message.text
-	if answer.lower() == side_question.answer:
+	side_answers = side_question.answer.split(',')
+	if answer.lower() in side_answers:
 		stickers = [
 			r'CAACAgIAAxkBAAEM8_lnCgmhP2GPrVSAvd7qc3lb7QbcAgACSlkAAgxkUUhvU_3R1HXvMjYE',
 			r'CAACAgIAAxkBAAEM9AVnCgmyzSo-viiKphfvTw6hchYIOAACDFEAAllQUUh5bZw1MDbQ_jYE',
