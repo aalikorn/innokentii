@@ -1,3 +1,5 @@
+import random
+
 from aiogram.dispatcher.filters import ChatTypeFilter
 from aiogram.dispatcher import FSMContext
 from aiogram import types
@@ -29,13 +31,24 @@ async def save_answer_main(message: types.Message, state=FSMContext):
 
 	right_answer = main_question.answer
 	if message.text.lower() == right_answer:
+		stickers = [
+			'CAACAgIAAxkBAAEM8_lnCgmhP2GPrVSAvd7qc3lb7QbcAgACSlkAAgxkUUhvU_3R1HXvMjYE',
+			'CAACAgIAAxkBAAEM9AVnCgmyzSo - viiKphfvTw6hchYIOAACDFEAAllQUUh5bZw1MDbQ_jYE'
+		]
+		sticker = random.choice(stickers)
 		user = crud.table_user.get_user(message.from_user.id)
 		crud.table_user.increase_rating(user.user_id)
 		text = main_question.right_response
 	else:
+		stickers = [
+			'CAACAgIAAxkBAAEM9AFnCgmt_i_PHriaSMWZOzlED-lunwACN1kAAnNTUUg-AtQiceHVhTYE',
+			'CAACAgIAAxkBAAEM9ANnCgmvX_2VSI02mWUjvUno62WejAACFVMAAkEvUEh7r6biYBnJ8TYE'
+		]
+		sticker = random.choice(stickers)
 		text = main_question.wrong_response
 
 	await state.set_state(UserStates.side_question)
+	await bot.send_sticker(message.from_user.id, sticker)
 	await bot.send_message(chat_id=message.from_user.id, text=text)
 
 	id = group_side_questions[0].id
@@ -58,11 +71,22 @@ async def validate_side_answer(message: types.Message, state=FSMContext):
 
 	answer = message.text
 	if answer.lower() == side_question.answer:
+		stickers = [
+			'CAACAgIAAxkBAAEM8_lnCgmhP2GPrVSAvd7qc3lb7QbcAgACSlkAAgxkUUhvU_3R1HXvMjYE',
+			'CAACAgIAAxkBAAEM9AVnCgmyzSo - viiKphfvTw6hchYIOAACDFEAAllQUUh5bZw1MDbQ_jYE'
+		]
+		sticker = random.choice(stickers)
 		crud.table_user.increase_rating(user.user_id)
 		text = side_question.right_response
 	else:
+		stickers = [
+			'CAACAgIAAxkBAAEM9AFnCgmt_i_PHriaSMWZOzlED-lunwACN1kAAnNTUUg-AtQiceHVhTYE',
+			'CAACAgIAAxkBAAEM9ANnCgmvX_2VSI02mWUjvUno62WejAACFVMAAkEvUEh7r6biYBnJ8TYE'
+		]
+		sticker = random.choice(stickers)
 		text = side_question.wrong_response
 
+	await bot.send_sticker(message.from_user.id, sticker)
 	await bot.send_message(chat_id=message.from_user.id, text=text)
 
 	if len(group_side_questions) > 0:
@@ -73,6 +97,7 @@ async def validate_side_answer(message: types.Message, state=FSMContext):
 		await bot.send_message(chat_id=message.from_user.id, text=text)
 	else:
 		main_question = crud.table_main_question.get_main_question(main_q_id + 1)
+
 		if main_question is None:
 			rating = crud.table_user.get_user(telegram_id=message.from_user.id).rating
 			max_res = crud.table_main_question.count_rows() + crud.table_side_question.count_rows()
@@ -83,6 +108,7 @@ async def validate_side_answer(message: types.Message, state=FSMContext):
 			await state.set_state(UserStates.start)
 			await bot.send_message(chat_id=message.from_user.id, text=text)
 			return
+
 		text = main_question.content
 
 		await state.set_state(UserStates.main_question)
