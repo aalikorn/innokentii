@@ -10,6 +10,7 @@ from database import crud
 
 @dp.callback_query_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), text='admin_tour_create_party', state='*')
 async def add_party(call: types.CallbackQuery, state=FSMContext):
+	await call.message.delete()
 	curr_admin = crud.table_admin.get_admin(call.from_user.id)
 	party_ids = curr_admin.party_id
 	curr_party_id = str(int(party_ids.split(',')[-1]) + 1)
