@@ -13,9 +13,17 @@ from database import crud
 @dp.message_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), commands=['start'], state='*')
 async def start(message: types.Message, state=FSMContext):
 	await state.set_state(UserStates.start)
-	if (message.from_user.id in config.ADMINS):
+	if message.from_user.id in config.SUPER_ADMINS:
 		text = 'Выберите действие'
-		await message.reply(text, reply_markup=keyboards.inline.admin.admin_markup())
+		await bot.send_message(message.from_user.id, text, reply_markup=keyboards.inline.admin.admin_markup())
+	elif message.from_user.id in [i[0] for i in crud.table_admin.get_all()]:
+		text = 'Выберите действие'
+
+		await bot.send_message(
+			message.from_user.id,
+			text=text,
+			reply_markup=keyboards.inline.admin_tour.admin_tour_markup()
+		)
 	elif crud.table_user.get_user(message.from_user.id):
 		text = crud.table_main_question.get_main_question(1).content  # первый мейн
 
