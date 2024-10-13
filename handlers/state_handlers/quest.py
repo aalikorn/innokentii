@@ -14,22 +14,22 @@ from database import crud
 async def save_answer_main(message: types.Message, state=FSMContext):
 	main_q_data = await state.get_data()
 	main_q_id = main_q_data.get('main_q_id')
+	main_question = crud.table_main_question.get_main_question(main_q_id)
 
-    main_question = crud.table_main_question.get_main_question(main_q_id)
-    if main_question is None:
-        rating = crud.table_user.get_user(telegram_id=message.from_user.id).rating
-        max_res = crud.table_main_question.count_rows() + crud.table_side_question.count_rows()
-        text = (
-            'Поздравляю, ты прошел всю интерактивную экскурсию по Университету Иннополис от команды «Маркеры»! '
-            f'Твой результат составил Твой результат составил - {rating}/{max_res}.\n'
-            'Надеюсь, тебе понравился этот опыт и ты сохранишь стикеры со мной, белым барсом Иннокентием! '
-            'Удачи)\nКстати, не забывай подписаться на канал Университета Иннополис! '
-            'Там мы выкладываем новости на самые интересные темы, касающиеся нашего университета)'
-            '\n\nhttps://t.me/universityinnopolis'
-        )
-        await state.set_state(UserStates.start)
-        await bot.send_message(chat_id=message.from_user.id, text=text)
-        return
+	if main_question is None:
+		rating = crud.table_user.get_user(telegram_id=message.from_user.id).rating
+		max_res = crud.table_main_question.count_rows() + crud.table_side_question.count_rows()
+		text = (
+			'Поздравляю, ты прошел всю интерактивную экскурсию по Университету Иннополис от команды «Маркеры»! '
+			f'Твой результат составил Твой результат составил - {rating} / {max_res}.\n'
+			'Надеюсь, тебе понравился этот опыт и ты сохранишь стикеры со мной, белым барсом Иннокентием! '
+			'Удачи)\nКстати, не забывай подписаться на канал Университета Иннополис! '
+			'Там мы выкладываем новости на самые интересные темы, касающиеся нашего университета)'
+			'\n\nhttps://t.me/universityinnopolis'
+		)
+		await state.set_state(UserStates.start)
+		await bot.send_message(chat_id=message.from_user.id, text=text)
+		return
 
 	group_side_questions = main_q_data.get('group_side_questions')
 
@@ -91,23 +91,23 @@ async def validate_side_answer(message: types.Message, state=FSMContext):
 			rating = crud.table_user.get_user(telegram_id=message.from_user.id).rating
 			max_res = crud.table_main_question.count_rows() + crud.table_side_question.count_rows()
 
-            sticker = r'CAACAgIAAxkBAAEM8_9nCgmqwJVG1uICSjAHKwJmnWf94AACnU8AAtINUEg7JWGTMHNWkDYE'
-            await bot.send_sticker(message.from_user.id, sticker)
-            text = (
-                'Поздравляю, ты прошел всю интерактивную экскурсию по Университету Иннополис от команды «Маркеры»! '
-                f'Твой результат составил Твой результат составил {rating}/{max_res}.\n'
-                'Надеюсь, тебе понравился этот опыт и ты сохранишь стикеры со мной, белым барсом Иннокентием! '
-                'Удачи)\nКстати, не забывай подписаться на канал Университета Иннополис! '
-                'Там мы выкладываем новости на самые интересные темы, касающиеся нашего университета)'
-                '\n\nhttps://t.me/universityinnopolis'
-            )
-            await state.set_state(UserStates.start)
-            await bot.send_message(chat_id=message.from_user.id, text=text)
-            return
+			sticker = r'CAACAgIAAxkBAAEM9nNnDC1pz44_LA1y-VtDvfsvIlF_cQACPmIAAje6YEg1eDNeRIlU4jYE'
+			await bot.send_sticker(message.from_user.id, sticker)
+			text = (
+				'Поздравляю, ты прошел всю интерактивную экскурсию по Университету Иннополис от команды «Маркеры»! '
+				f'Твой результат составил Твой результат составил {rating} / {max_res}.\n'
+				'Надеюсь, тебе понравился этот опыт и ты сохранишь стикеры со мной, белым барсом Иннокентием! '
+				'Удачи)\nКстати, не забывай подписаться на канал Университета Иннополис! '
+				'Там мы выкладываем новости на самые интересные темы, касающиеся нашего университета)'
+				'\n\nhttps://t.me/universityinnopolis'
+			)
+			await state.set_state(UserStates.start)
+			await bot.send_message(chat_id=message.from_user.id, text=text)
+			return
 
 		text = main_question.content
 
-		sticker = r'CAACAgIAAxkBAAEM8_1nCgmn1svonSMqIceT6AasU39IWAACbl4AAkxjUEiPpzM_cnUx8DYE'
+		sticker = r'CAACAgIAAxkBAAEM9nlnDC12lZU6FHBtypJFTNDtApEv4wACoF0AAudhYEj1zh3ry0asDzYE'
 		await bot.send_sticker(message.from_user.id, sticker)
 
 		await state.set_state(UserStates.main_question)
