@@ -39,3 +39,11 @@ class SideQuestion(Base):
 	answer = Column(String, nullable=False)
 	right_response = Column(String, nullable=False)
 	wrong_response = Column(String, nullable=False)
+
+
+class Admin(Base):
+	"""Таблица для админов"""
+	__tablename__ = 'Admin'
+
+	admin_id = Column(Integer, primary_key=True, unique=True, nullable=False)
+	telegram_id = Column(Integer, unique=True, nullable=False)
