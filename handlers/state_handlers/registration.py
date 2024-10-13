@@ -39,31 +39,48 @@ async def save_age(message: types.Message, state=FSMContext):
 
 @dp.message_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), content_types=['text'],
                     state=UserStates.wait_mail)
-async def save_user(message: types.Message, state=FSMContext):
+async def save_mail(message: types.Message, state=FSMContext):
     regex = r'^\S+@\S+\.\S+$'
 
-
     if re.fullmatch(regex, message.text):
-        await state.set_state(state=None)
-        data = await state.get_data()
-        full_name = data.get('user_name')
-        age = data.get('user_age')
-        crud.table_user.add_user(
-            telegram_id=message.from_user.id,
-            full_name=full_name,
-            age=age,
-            mail=message.text
-        )
-        await bot.send_message(
-            message.from_user.id,
-            text='Поздравляем, ты успешно зарегистрировался. Теперь расскажу немного о моей экскурсии. '
-                 'Впереди тебя ждут интересные вопросы, загадки и задачи про университет, решая которые '
-                 'ты будешь узнавать все больше и больше об этом месте. Все вопросы поделены по блокам, каждый '
-                 'из которых можно будет открыть после конца предыдущего, решив контрольную задачку, которую ты '
-                 'сможешь получить, отсканировав QR-код в одном из интересных мест университета. Не волнуйся, мы '
-                 'обязательно подскажем тебе, где найти QR и как решить задачку. Удачи в прохождении!'
-                 'Чтобы запустить квест нажми кнопку "Начать"',
-            reply_markup=keyboards.inline.quest.start_quest()
-        )
+        await state.update_data(mail=message.text)
+        await state.set_state(UserStates.wait_party_id)
+        await bot.send_message(chat_id=message.from_user.id, text='Напиши номер твоей группы')
     else:
         await bot.send_message(message.from_user.id, text='Некорректный формат ввода. Напиши свою почту')
+
+
+@dp.message_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), content_types=['text'],
+                    state=UserStates.wait_party_id)
+async def save_user(message: types.Message, state=FSMContext):
+    regex = r'^\d+_\d+$'
+
+    if re.fullmatch(regex, message.text):
+        if crud.table_admin.check_party_admin_id(message.text) is True:
+            await state.set_state(state=None)
+            data = await state.get_data()
+            full_name = data.get('user_name')
+            age = data.get('user_age')
+            mail = data.get('mail')
+            crud.table_user.add_user(
+                telegram_id=message.from_user.id,
+                full_name=full_name,
+                age=age,
+                mail=mail,
+                party_id=message.text
+            )
+            await bot.send_message(
+                message.from_user.id,
+                text='Поздравляем, ты успешно зарегистрировался. Теперь расскажу немного о моей экскурсии. '
+                     'Впереди тебя ждут интересные вопросы, загадки и задачи про университет, решая которые '
+                     'ты будешь узнавать все больше и больше об этом месте. Все вопросы поделены по блокам, каждый '
+                     'из которых можно будет открыть после конца предыдущего, решив контрольную задачку, которую ты '
+                     'сможешь получить, отсканировав QR-код в одном из интересных мест университета. Не волнуйся, мы '
+                     'обязательно подскажем тебе, где найти QR и как решить задачку. Удачи в прохождении!'
+                     'Чтобы запустить квест нажми кнопку "Начать"',
+                reply_markup=keyboards.inline.quest.start_quest()
+            )
+        else:
+            await bot.send_message(message.from_user.id, text='Такой группы не существует. Попробуй еще раз')
+    else:
+        await bot.send_message(message.from_user.id, text='Некорректный формат ввода. Напиши номер своей группы')
