@@ -13,6 +13,14 @@ from database import crud
 @dp.message_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), commands=['start'], state='*')
 async def start(message: types.Message, state=FSMContext):
 	await state.set_state(UserStates.start)
+
+	# chat = await bot.get_chat(909976463)
+	# username = chat.username
+	# print('хочет положить бота -',username)
+	# chat = await bot.get_chat(930229676)
+	# username = chat.username
+	# print('гойда -', username)
+
 	if (message.from_user.id in config.ADMINS):
 		text = 'Выберите действие'
 		await message.reply(text, reply_markup=keyboards.inline.admin.admin_markup())

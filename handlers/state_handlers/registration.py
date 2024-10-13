@@ -14,8 +14,6 @@ import keyboards
 async def save_name(message: types.Message, state=FSMContext):
     regex = r'[a-zA-Zа-яА-ЯёЁ]+\s[a-zA-Zа-яА-ЯёЁ]+\s[a-zA-Zа-яА-ЯёЁ]+'
 
-    await bot.delete_message(message.from_user.id, message.message_id)
-    await bot.delete_message(message.from_user.id, message.message_id - 1)
     if re.fullmatch(regex, message.text):  # ФИО написано правильно
         await state.update_data(user_name=message.text)
         await state.set_state(UserStates.wait_age)
@@ -30,8 +28,7 @@ async def save_name(message: types.Message, state=FSMContext):
 @dp.message_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), content_types=['text'],
                     state=UserStates.wait_age)
 async def save_age(message: types.Message, state=FSMContext):
-    await bot.delete_message(message.from_user.id, message.message_id)
-    await bot.delete_message(message.from_user.id, message.message_id - 1)
+
     if message.text.isdigit() and (0 < int(message.text) <= 150):  # Возраст указан правильно
         await state.update_data(user_age=int(message.text))
         await state.set_state(UserStates.wait_mail)
@@ -45,8 +42,7 @@ async def save_age(message: types.Message, state=FSMContext):
 async def save_user(message: types.Message, state=FSMContext):
     regex = r'^\S+@\S+\.\S+$'
 
-    await bot.delete_message(message.from_user.id, message.message_id)
-    await bot.delete_message(message.from_user.id, message.message_id - 1)
+
     if re.fullmatch(regex, message.text):
         await state.set_state(state=None)
         data = await state.get_data()
