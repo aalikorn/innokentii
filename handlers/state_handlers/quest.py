@@ -31,17 +31,12 @@ async def save_answer_main(message: types.Message, state=FSMContext):
 
 	main_answers = main_question.answer.split(',')
 	if message.text.lower() in main_answers:
-		stickers = [
-			r'CAACAgIAAxkBAAEM8_lnCgmhP2GPrVSAvd7qc3lb7QbcAgACSlkAAgxkUUhvU_3R1HXvMjYE',
-			r'CAACAgIAAxkBAAEM9AVnCgmyzSo-viiKphfvTw6hchYIOAACDFEAAllQUUh5bZw1MDbQ_jYE',
-			r'CAACAgIAAxkBAAEM9ANnCgmvX_2VSI02mWUjvUno62WejAACFVMAAkEvUEh7r6biYBnJ8TYE'
-		]
-		sticker = random.choice(stickers)
+		sticker = r'CAACAgIAAxkBAAEM9ndnDC1zOI9LrQp12370PZCpgne6NgAC7lsAAqF0YUgaQhPljxXUbjYE'
 		user = crud.table_user.get_user(message.from_user.id)
 		crud.table_user.increase_rating(user.user_id)
 		text = main_question.right_response
 	else:
-		sticker = r'CAACAgIAAxkBAAEM9AFnCgmt_i_PHriaSMWZOzlED-lunwACN1kAAnNTUUg-AtQiceHVhTYE'
+		sticker = r'CAACAgIAAxkBAAEM9nlnDC12lZU6FHBtypJFTNDtApEv4wACoF0AAudhYEj1zh3ry0asDzYE'
 		text = main_question.wrong_response
 
 	await state.set_state(UserStates.side_question)
@@ -69,16 +64,11 @@ async def validate_side_answer(message: types.Message, state=FSMContext):
 	answer = message.text
 	side_answers = side_question.answer.split(',')
 	if answer.lower() in side_answers:
-		stickers = [
-			r'CAACAgIAAxkBAAEM8_lnCgmhP2GPrVSAvd7qc3lb7QbcAgACSlkAAgxkUUhvU_3R1HXvMjYE',
-			r'CAACAgIAAxkBAAEM9AVnCgmyzSo-viiKphfvTw6hchYIOAACDFEAAllQUUh5bZw1MDbQ_jYE',
-			r'CAACAgIAAxkBAAEM9ANnCgmvX_2VSI02mWUjvUno62WejAACFVMAAkEvUEh7r6biYBnJ8TYE'
-		]
-		sticker = random.choice(stickers)
+		sticker = r'CAACAgIAAxkBAAEM9ndnDC1zOI9LrQp12370PZCpgne6NgAC7lsAAqF0YUgaQhPljxXUbjYE'
 		crud.table_user.increase_rating(user.user_id)
 		text = side_question.right_response
 	else:
-		sticker = r'CAACAgIAAxkBAAEM9AFnCgmt_i_PHriaSMWZOzlED-lunwACN1kAAnNTUUg-AtQiceHVhTYE'
+		sticker = r'CAACAgIAAxkBAAEM9nlnDC12lZU6FHBtypJFTNDtApEv4wACoF0AAudhYEj1zh3ry0asDzYE'
 		text = side_question.wrong_response
 
 	await bot.send_sticker(message.from_user.id, sticker)
@@ -94,17 +84,19 @@ async def validate_side_answer(message: types.Message, state=FSMContext):
 		main_question = crud.table_main_question.get_main_question(main_q_id + 1)
 
 		if main_question is None:
+			await state.set_state(UserStates.start)
+
 			rating = crud.table_user.get_user(telegram_id=message.from_user.id).rating
 			max_res = crud.table_main_question.count_rows() + crud.table_side_question.count_rows()
 
-			sticker = r'CAACAgIAAxkBAAEM8_9nCgmqwJVG1uICSjAHKwJmnWf94AACnU8AAtINUEg7JWGTMHNWkDYE'
-			await bot.send_sticker(message.from_user.id, sticker)
+			sticker = r'CAACAgIAAxkBAAEM9nNnDC1pz44_LA1y-VtDvfsvIlF_cQACPmIAAje6YEg1eDNeRIlU4jYE'
 
 			text = ('Поздравляю, ты прошел всю интерактивную экскурсию по '
 					'Университету Иннополис от команды «Маркеры»! '
 					f'Твой результат составил {rating} / {max_res}. Надеюсь, тебе понравился этот опыт и ты сохранишь '
 					'стикеры со мной, белым барсом Иннокентием! Удачи)')
-			await state.set_state(UserStates.start)
+
+			await bot.send_sticker(message.from_user.id, sticker)
 			await bot.send_message(chat_id=message.from_user.id, text=text)
 			return
 
