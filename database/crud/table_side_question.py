@@ -20,8 +20,10 @@ def get_questions(main_question_id: int):
 	session = db.SessionLocal()
 	query = session.query(models.SideQuestion)
 
-	# рандомит сайд вопросы
-	return query.filter(models.SideQuestion.main_question_id == main_question_id).order_by(func.random()).all()
+	# рандом сайд вопросы
+	# return query.filter(models.SideQuestion.main_question_id == main_question_id).order_by(func.random()).all()
+
+	return query.filter(models.SideQuestion.main_question_id == main_question_id).all()
 
 
 def delete_question(question_id: int):
