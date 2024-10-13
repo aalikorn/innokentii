@@ -6,6 +6,7 @@ class UserStates(StatesGroup):
 	wait_name = State()  # Ожидаем ФИО пользователя
 	wait_age = State()  # Ожидаем возраст пользователя
 	wait_mail = State()  # Ожидаем электронную почту пользователя
+	wait_party_id = State()  # Ожидаем номер группф
 
 	# добавление вопроса
 	create_question = State()
@@ -27,3 +28,12 @@ class UserStates(StatesGroup):
 	# Начало квеста
 	side_question = State()  # Побочные вопросы
 	main_question = State()  # Главные вопросы
+
+	# Добавление админа
+	add_admin_start = State()  # Нажал кнопку добавить админа
+	add_admin = State()  # Добавление админа
+
+	# Админ-экскурсовод запросил таблицу юзеров
+	export_users_party = State()  # Экспорт юзеров
+
+
