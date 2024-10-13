@@ -11,19 +11,29 @@ def get_all():
     return data
 
 
+def get_all_party(party_id: str):
+    """Получить все данные из таблицы User определенной группы"""
+    session = db.SessionLocal()
+    query = session.query(models.User)
+
+    data = query.filter(models.User.party_id == party_id).all()
+    return data
+
+
 def get_user(telegram_id: int):
     session = db.SessionLocal()
     query = session.query(models.User)
     return query.filter(models.User.telegram_id == telegram_id).one_or_none()
 
 
-def add_user(telegram_id: int, full_name: str, age: int, mail: str):
+def add_user(telegram_id: int, full_name: str, age: int, mail: str, party_id: str):
     session = db.SessionLocal()
     user = models.User(
         telegram_id=telegram_id,
         full_name=full_name,
         age=age,
-        mail=mail
+        mail=mail,
+        party_id=party_id
     )
     session.add(user)
     session.commit()
