@@ -15,6 +15,7 @@ class User(Base):
 	age = Column(Integer, nullable=False)
 	mail = Column(String, nullable=False)
 	rating = Column(Integer, default=0)
+	party_id = Column(String, nullable=False)
 
 
 class MainQuestion(Base):
@@ -47,3 +48,4 @@ class Admin(Base):
 
 	admin_id = Column(Integer, primary_key=True, unique=True, nullable=False)
 	telegram_id = Column(Integer, unique=True, nullable=False)
+	party_id = Column(String, default='0')
