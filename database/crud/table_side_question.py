@@ -1,5 +1,6 @@
 from database import db
 from database import models
+from  sqlalchemy.sql.expression import func
 
 
 def create_question(content: str, answer: str, right_response: str, wrong_response: str, main_question_id: int):
@@ -18,7 +19,9 @@ def create_question(content: str, answer: str, right_response: str, wrong_respon
 def get_questions(main_question_id: int):
 	session = db.SessionLocal()
 	query = session.query(models.SideQuestion)
-	return query.filter(models.SideQuestion.main_question_id == main_question_id).all()
+
+	# рандомит сайд вопросы
+	return query.filter(models.SideQuestion.main_question_id == main_question_id).order_by(func.random()).all()
 
 
 def delete_question(question_id: int):
