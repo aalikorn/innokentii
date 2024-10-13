@@ -43,7 +43,7 @@ class SideQuestion(Base):
 
 
 class Admin(Base):
-	"""Таблица для админов"""
+	"""Таблица для админов-экскурсоводов"""
 	__tablename__ = 'Admin'
 
 	admin_id = Column(Integer, primary_key=True, unique=True, nullable=False)
