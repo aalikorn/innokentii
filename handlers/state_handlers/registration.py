@@ -44,39 +44,27 @@ async def save_mail(message: types.Message, state=FSMContext):
 
     if re.fullmatch(regex, message.text):
         await state.update_data(mail=message.text)
-        await state.set_state(UserStates.wait_party_id)
-        await bot.send_message(chat_id=message.from_user.id, text='Напиши номер твоей группы')
+        await state.set_state(state=None)
+        data = await state.get_data()
+        full_name = data.get('user_name')
+        age = data.get('user_age')
+        mail = data.get('mail')
+        crud.table_user.add_user(
+            telegram_id=message.from_user.id,
+            full_name=full_name,
+            age=age,
+            mail=mail,
+            party_id="1_1"
+        )
+
+        text = crud.table_main_question.get_main_question(1).content
+        await bot.send_message(
+            message.from_user.id,
+            text=text,
+            reply_markup=keyboards.inline.quest.start_quest()
+        )
     else:
         await bot.send_message(message.from_user.id, text='Некорректный формат ввода. Напиши свою почту')
 
 
-@dp.message_handler(ChatTypeFilter(chat_type=types.ChatType.PRIVATE), content_types=['text'],
-                    state=UserStates.wait_party_id)
-async def save_user(message: types.Message, state=FSMContext):
-    regex = r'^\d+_\d+$'
 
-    if re.fullmatch(regex, message.text):
-        if crud.table_admin.check_party_admin_id(message.text) is True:
-            await state.set_state(state=None)
-            data = await state.get_data()
-            full_name = data.get('user_name')
-            age = data.get('user_age')
-            mail = data.get('mail')
-            crud.table_user.add_user(
-                telegram_id=message.from_user.id,
-                full_name=full_name,
-                age=age,
-                mail=mail,
-                party_id=message.text
-            )
-
-            text = crud.table_main_question.get_main_question(1).content
-            await bot.send_message(
-                message.from_user.id,
-                text=text,
-                reply_markup=keyboards.inline.quest.start_quest()
-            )
-        else:
-            await bot.send_message(message.from_user.id, text='Такой группы не существует. Попробуй еще раз')
-    else:
-        await bot.send_message(message.from_user.id, text='Некорректный формат ввода. Напиши номер своей группы')

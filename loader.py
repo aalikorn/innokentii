@@ -17,7 +17,7 @@ models.Base.metadata.create_all(bind=engine)
 # Загружаем мейн-вопросы
 crud.table_main_question.load_main_questions()
 
-api_id = 26770220
-api_hash = "85be3e1a9b6ad7e4420a93caa17ae448"
+api_id = 25805109
+api_hash = "45ffdc713d3ba30a4ced4ae195abe41b"
 app = Client("get_chat_id", api_id=config.API_ID, api_hash=config.API_HASH,
              bot_token=config.TOKEN, in_memory=False)

@@ -20,7 +20,7 @@ async def save_answer_main(message: types.Message, state=FSMContext):
 		rating = crud.table_user.get_user(telegram_id=message.from_user.id).rating
 		max_res = crud.table_main_question.count_rows() + crud.table_side_question.count_rows()
 		text = (
-			'Поздравляю, ты прошел всю интерактивную экскурсию по Университету Иннополис от команды «Маркеры»! '
+			'Поздравляю, ты прошел всю интерактивную экскурсию по Университету Иннополис! '
 			f'Твой результат составил Твой результат составил - {rating} / {max_res}.\n'
 			'Надеюсь, тебе понравился этот опыт и ты сохранишь стикеры со мной, белым барсом Иннокентием! '
 			'Удачи)\nКстати, не забывай подписаться на канал Университета Иннополис! '
@@ -94,7 +94,7 @@ async def validate_side_answer(message: types.Message, state=FSMContext):
 			sticker = r'CAACAgIAAxkBAAEM9nNnDC1pz44_LA1y-VtDvfsvIlF_cQACPmIAAje6YEg1eDNeRIlU4jYE'
 			await bot.send_sticker(message.from_user.id, sticker)
 			text = (
-				'Поздравляю, ты прошел всю интерактивную экскурсию по Университету Иннополис от команды «Маркеры»! '
+				'Поздравляю, ты прошел всю интерактивную экскурсию по Университету Иннополис! '
 				f'Твой результат составил Твой результат составил {rating} / {max_res}.\n'
 				'Надеюсь, тебе понравился этот опыт и ты сохранишь стикеры со мной, белым барсом Иннокентием! '
 				'Удачи)\nКстати, не забывай подписаться на канал Университета Иннополис! '
